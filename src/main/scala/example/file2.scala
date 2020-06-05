@@ -1,29 +1,35 @@
 package example
 
-import model.{Employee, IceCream}
+import model.{Circle, Rectangle, Shape}
 
-object file1 extends App {
+object file2 extends App {
   import shapeless._
 
-  // 1-1
-  val genericEmployee = Generic[Employee].to(Employee("Dave", 123, false))
-  // genericEmployee: String :: Int :: Boolean :: shapeless.HNil = Dave :: 123 :: false :: HNil
-  println(genericEmployee)
+  /*
+  * ジェネリック・プログラミングの主な考え方は、
+  * 少量のジェネリック・コードを書くことで、
+  * 多種多様な型の問題を解決することです。
+  * Shapelessはこの目的のために2つのツールを提供しています。
+  */
 
-  val genericIceCream = Generic[IceCream].to(IceCream("Sundae", 1, false))
-  // genericIceCream: String :: Int :: Boolean :: shapeless.HNil = Sundae :: 1 :: false :: HNil
-  println(genericIceCream)
+  // 2
+  val rect: Shape = Rectangle(3.0, 4.0)
+  println(rect)
 
-  def genericCsv(gen: String :: Int :: Boolean :: HNil): List[String] =
-    List(gen(0), gen(1).toString, gen(2).toString)
+  val circ: Shape = Circle(1.0)
+  println
 
-  println(genericCsv(genericEmployee))
-  // res2: List[String] = List(Dave, 123, false)
+  def area(shape: Shape): Double =
+    shape match {
+      case Rectangle(w, h) => w * h
+      case Circle(r)       => math.Pi * r * r
+    }
 
-  println(genericCsv(genericIceCream))
-  // res3: List[String] = List(Sundae, 1, false)
+  area(rect)
+  // res1: Double = 12.0
+
+  area(circ)
+  // res2: Double = 3.141592653589793
 
 
-  // 1-3
-  
 }
